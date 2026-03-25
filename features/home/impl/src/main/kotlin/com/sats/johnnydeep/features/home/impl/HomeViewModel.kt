@@ -14,7 +14,7 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.launch
 
 @Inject
-@ViewModelKey(HomeViewModel::class)
+@ViewModelKey
 @ContributesIntoMap(AppScope::class)
 class HomeViewModel(
   private val historyRepository: HistoryRepository,
