@@ -49,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -71,18 +72,20 @@ internal fun HomeScreen(
   onInputValueChange: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
   val snackbarHostState = remember { SnackbarHostState() }
   val coroutineScope = rememberCoroutineScope()
 
   viewState.intentDeletedNotice?.let { intentDeletedNotice ->
+    val message = stringResource(R.string.previous_intent_deleted)
+    val actionLabel = stringResource(R.string.previous_intent_deleted_undo_button_label)
+
     LaunchedEffect(intentDeletedNotice) {
       coroutineScope.launch {
         snackbarHostState.currentSnackbarData?.dismiss()
 
         val result = snackbarHostState.showSnackbar(
-          message = context.getString(R.string.previous_intent_deleted),
-          actionLabel = context.getString(R.string.previous_intent_deleted_undo_button_label),
+          message = message,
+          actionLabel = actionLabel,
           duration = SnackbarDuration.Short,
           withDismissAction = true,
         )
@@ -94,14 +97,14 @@ internal fun HomeScreen(
     }
   }
 
-  viewState.intentFailedNotice?.let { intentFailedNotice ->
-    LaunchedEffect(intentFailedNotice) {
+  viewState.intentFailedNotice?.let {
+    val errorMessage = stringResource(R.string.activity_not_found_toast_message)
+
+    LaunchedEffect(Unit) {
       coroutineScope.launch {
         snackbarHostState.currentSnackbarData?.dismiss()
 
-        snackbarHostState.showSnackbar(
-          message = context.getString(R.string.activity_not_found_toast_message),
-        )
+        snackbarHostState.showSnackbar(message = errorMessage)
 
         onNoticeDismissed()
       }
@@ -113,6 +116,8 @@ internal fun HomeScreen(
     snackbarHost = { SnackbarHost(snackbarHostState) },
     bottomBar = {
       val inputValue = viewState.inputValue
+      val context = LocalContext.current
+      val resources = LocalResources.current
 
       Form(
         inputValue = inputValue,
@@ -131,7 +136,7 @@ internal fun HomeScreen(
 
             coroutineScope.launch {
               snackbarHostState.showSnackbar(
-                context.getString(R.string.activity_not_found_toast_message)
+                resources.getString(R.string.activity_not_found_toast_message)
               )
             }
           }
