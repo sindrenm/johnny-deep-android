@@ -1,3 +1,5 @@
+import dev.zacsweers.metro.gradle.ExperimentalMetroGradleApi
+
 plugins {
   alias(libs.plugins.convention.android.library)
   alias(libs.plugins.metro)
@@ -10,6 +12,11 @@ android {
 
 ksp {
   arg("room.schemaLocation", "$projectDir/room-schemas")
+}
+
+metro {
+  @OptIn(ExperimentalMetroGradleApi::class)
+  generateContributionProviders.set(true)
 }
 
 dependencies {

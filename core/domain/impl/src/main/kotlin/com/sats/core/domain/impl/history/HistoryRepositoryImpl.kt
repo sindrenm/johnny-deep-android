@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 @ContributesBinding(AppScope::class)
-class HistoryRepositoryImpl(
+internal class HistoryRepositoryImpl(
   private val intentsDao: IntentsDao,
 ) : HistoryRepository {
   override fun getIntentsHistory(): Flow<List<PreviousIntent>> {
