@@ -1,7 +1,14 @@
+import dev.zacsweers.metro.gradle.ExperimentalMetroGradleApi
+
 plugins {
   alias(libs.plugins.convention.android.application)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.metro)
+}
+
+@OptIn(ExperimentalMetroGradleApi::class)
+metro {
+  enableCircuitCodegen.set(true)
 }
 
 android {
@@ -17,10 +24,8 @@ android {
 
 dependencies {
   implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.navigation3.runtime)
-  implementation(libs.androidx.navigation3.ui)
+  implementation(libs.circuit.foundation)
   implementation(libs.metrox.android)
-  implementation(libs.metrox.viewmodel.compose)
   implementation(projects.core.domain.api)
   implementation(projects.core.domain.impl)
   implementation(projects.core.ui.theme)

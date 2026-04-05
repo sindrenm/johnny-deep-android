@@ -54,6 +54,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.sats.core.domain.api.history.models.PreviousIntent
+import com.sats.johnnydeep.features.home.api.HomeScreen
+import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
 import java.time.format.DateTimeFormatter
 import kotlin.time.Instant
 import kotlinx.coroutines.launch
@@ -61,21 +66,26 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 
+@CircuitInject(HomeScreen::class, AppScope::class)
+@Inject
+class HomeUi : Ui<HomeScreen.State> {
+  @Composable
+  override fun Content(
+    state: HomeScreen.State,
+    modifier: Modifier
+  ) {
+    HomeScreen(state, modifier)
+  }
+
+}
+
 @Composable
-internal fun HomeScreen(
-  viewState: HomeViewState,
-  onUriOpenedSuccessfully: (String) -> Unit,
-  onUriFailedToOpen: (String) -> Unit,
-  onNoticeDismissed: () -> Unit,
-  onPreviousIntentClicked: (PreviousIntent) -> Unit,
-  onPreviousIntentRemoved: (PreviousIntent) -> Unit,
-  onInputValueChange: (String) -> Unit,
-  modifier: Modifier = Modifier,
-) {
+private fun HomeScreen(state: HomeScreen.State, modifier: Modifier = Modifier) {
   val snackbarHostState = remember { SnackbarHostState() }
   val coroutineScope = rememberCoroutineScope()
+  val eventSink = state.eventSink
 
-  viewState.intentDeletedNotice?.let { intentDeletedNotice ->
+  state.intentDeletedNotice?.let { intentDeletedNotice ->
     val message = stringResource(R.string.previous_intent_deleted)
     val actionLabel = stringResource(R.string.previous_intent_deleted_undo_button_label)
 
@@ -92,12 +102,12 @@ internal fun HomeScreen(
 
         if (result == SnackbarResult.ActionPerformed) intentDeletedNotice.undo()
 
-        onNoticeDismissed()
+        eventSink(HomeScreen.Event.NoticeDismissed)
       }
     }
   }
 
-  viewState.intentFailedNotice?.let {
+  if (state.intentFailedNotice) {
     val errorMessage = stringResource(R.string.activity_not_found_toast_message)
 
     LaunchedEffect(Unit) {
@@ -106,7 +116,7 @@ internal fun HomeScreen(
 
         snackbarHostState.showSnackbar(message = errorMessage)
 
-        onNoticeDismissed()
+        eventSink(HomeScreen.Event.NoticeDismissed)
       }
     }
   }
@@ -115,13 +125,13 @@ internal fun HomeScreen(
     modifier = modifier,
     snackbarHost = { SnackbarHost(snackbarHostState) },
     bottomBar = {
-      val inputValue = viewState.inputValue
       val context = LocalContext.current
       val resources = LocalResources.current
+      val inputValue = state.inputValue
 
       Form(
         inputValue = inputValue,
-        onInputChange = onInputValueChange,
+        onInputChange = { eventSink(HomeScreen.Event.InputValueChanged(it)) },
         onOpenClicked = { flag ->
           try {
             val intent = Intent(Intent.ACTION_VIEW, inputValue.toUri()).apply {
@@ -130,9 +140,9 @@ internal fun HomeScreen(
 
             context.startActivity(intent)
 
-            onUriOpenedSuccessfully(inputValue)
+            eventSink(HomeScreen.Event.UriOpenedSuccessfully(inputValue))
           } catch (_: ActivityNotFoundException) {
-            onUriFailedToOpen(inputValue)
+            eventSink(HomeScreen.Event.UriFailedToOpen(inputValue))
 
             coroutineScope.launch {
               snackbarHostState.showSnackbar(
@@ -153,9 +163,9 @@ internal fun HomeScreen(
         .padding(contentPadding)
     ) {
       History(
-        previousIntents = viewState.previousIntents,
-        onItemClicked = onPreviousIntentClicked,
-        onRemoveItem = onPreviousIntentRemoved,
+        previousIntents = state.previousIntents,
+        onItemClicked = { eventSink(HomeScreen.Event.PreviousIntentClicked(it)) },
+        onRemoveItem = { eventSink(HomeScreen.Event.PreviousIntentRemoved(it)) },
         modifier = Modifier.weight(1f),
         contentPadding = PaddingValues(
           start = contentPadding.calculateStartPadding(LocalLayoutDirection.current),
