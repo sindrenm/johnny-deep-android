@@ -7,13 +7,11 @@ import com.sats.core.domain.impl.history.db.entities.PreviousIntentEntity
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 @ContributesBinding(AppScope::class)
-@OptIn(ExperimentalTime::class)
 class HistoryRepositoryImpl(
   private val intentsDao: IntentsDao,
 ) : HistoryRepository {
