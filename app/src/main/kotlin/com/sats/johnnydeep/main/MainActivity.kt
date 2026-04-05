@@ -16,7 +16,7 @@ import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
 
 @Inject
-@ActivityKey(MainActivity::class)
+@ActivityKey
 @ContributesIntoMap(AppScope::class, binding<Activity>())
 class MainActivity(
   private val metroViewModelFactory: MetroViewModelFactory,
