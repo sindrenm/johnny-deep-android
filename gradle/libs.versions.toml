@@ -1,7 +1,7 @@
 [versions]
 androidx-room = "2.8.4"
 circuit = "0.33.1"
-kotlin = "2.3.20"
+kotlin = "2.3.21"
 metro = "0.13.2"
 
 [plugins]
