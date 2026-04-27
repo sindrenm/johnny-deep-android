@@ -2,7 +2,7 @@
 androidx-room = "2.8.4"
 circuit = "0.33.1"
 kotlin = "2.3.21"
-metro = "0.13.2"
+metro = "1.0.0"
 
 [plugins]
 android-application = { id = "com.android.application", version = "9.2.0" }
