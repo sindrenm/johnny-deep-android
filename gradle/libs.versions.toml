@@ -5,7 +5,7 @@ kotlin = "2.3.21"
 metro = "1.0.0"
 
 [plugins]
-android-application = { id = "com.android.application", version = "9.2.0" }
+android-application = { id = "com.android.application", version = "9.2.1" }
 android-library = { id = "com.android.library", version = "9.2.1" }
 convention-android-application = { id = "convention-android-application" }
 convention-android-library = { id = "convention-android-library" }
