@@ -24,7 +24,7 @@ androidx-compose-material-icons-extended = "androidx.compose.material:material-i
 androidx-compose-material3 = "androidx.compose.material3:material3:1.5.0-alpha20"
 androidx-compose-runtime = "androidx.compose.runtime:runtime:1.11.2"
 androidx-compose-ui = "androidx.compose.ui:ui:1.11.2"
-androidx-core = "androidx.core:core:1.18.0"
+androidx-core = "androidx.core:core:1.19.0"
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 androidx-room-runtime = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
 circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "circuit" }
