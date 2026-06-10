@@ -1,6 +1,6 @@
 [versions]
 androidx-room = "2.8.4"
-circuit = "0.33.1"
+circuit = "0.34.0"
 kotlin = "2.4.0"
 metro = "1.1.1"
 
