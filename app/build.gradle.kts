@@ -25,6 +25,7 @@ android {
 dependencies {
   implementation(libs.androidx.activity.compose)
   implementation(libs.circuit.foundation)
+  implementation(libs.circuit.serialization)
   implementation(libs.metrox.android)
   implementation(projects.core.domain.api)
   implementation(projects.core.domain.impl)
