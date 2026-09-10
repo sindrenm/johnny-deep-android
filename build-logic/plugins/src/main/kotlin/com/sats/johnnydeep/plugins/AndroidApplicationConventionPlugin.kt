@@ -14,7 +14,9 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
     extensions.configure(ApplicationExtension::class.java) { extension ->
       extension.configureCommon()
 
-      extension.defaultConfig.targetSdk = 36
+      extension.defaultConfig.targetSdk {
+        version = release(36)
+      }
 
       extension.buildTypes {
         named("debug") {

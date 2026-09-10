@@ -10,8 +10,13 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
     pluginManager.apply("com.android.library")
 
     extensions.configure(LibraryExtension::class.java) { extension ->
-      extension.compileSdk = 36
-      extension.defaultConfig.minSdk = 28
+      extension.compileSdk {
+        version = release(36)
+      }
+
+      extension.defaultConfig.minSdk {
+        version = release(28)
+      }
     }
   }
 }
