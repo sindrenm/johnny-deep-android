@@ -1,6 +1,7 @@
 package com.sats.johnnydeep.plugins
 
 import com.android.build.api.dsl.LibraryExtension
+import com.sats.johnnydeep.plugins.internal.configureCommon
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -10,15 +11,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
     pluginManager.apply("com.android.library")
 
     extensions.configure(LibraryExtension::class.java) { extension ->
-      extension.compileSdk {
-        version = release(36) {
-          minorApiLevel = 2
-        }
-      }
-
-      extension.defaultConfig.minSdk {
-        version = release(28)
-      }
+      extension.configureCommon()
     }
   }
 }
